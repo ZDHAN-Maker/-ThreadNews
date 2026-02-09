@@ -4,6 +4,8 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { fetchOwnProfile } from './features/auth/authThunk';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
+import HomePage from './pages/HomePage';
+import { logout } from './features/auth/authSlice';
 
 function App() {
   const dispatch = useDispatch();
@@ -15,15 +17,43 @@ function App() {
 
   return (
     <BrowserRouter>
-      <nav>
-        <Link to="/">Home</Link> |{' '}
-        {user ? <span>Halo, {user.name}</span> : <Link to="/login">Login</Link>}
+      {/* NAVBAR */}
+      <nav className="flex items-center justify-between px-6 py-4 bg-slate-800 text-white">
+        <Link to="/" className="font-bold text-lg">
+          DICODING FORUM APP
+        </Link>
+
+        <div className="flex gap-4 items-center">
+          {!user && (
+            <>
+              <Link to="/login" className="hover:underline">
+                Login
+              </Link>
+              <Link to="/register" className="hover:underline">
+                Register
+              </Link>
+            </>
+          )}
+
+          {user && (
+            <>
+              <span>Halo, {user.name}</span>
+              <button
+                onClick={() => dispatch(logout())}
+                className="bg-red-500 px-3 py-1 rounded hover:bg-red-600"
+              >
+                Logout
+              </button>
+            </>
+          )}
+        </div>
       </nav>
 
+      {/* ROUTES */}
       <Routes>
-        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/" element={<h1>Home Page</h1>} />
+        <Route path="/register" element={<RegisterPage />} />
       </Routes>
     </BrowserRouter>
   );
