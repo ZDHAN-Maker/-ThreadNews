@@ -1,5 +1,6 @@
 import api from '../../services/api';
 import { setLoading, setToken, setUser, setError } from './authSlice';
+import { logout } from './authSlice';
 
 export const registerUser = (payload) => async (dispatch) => {
   dispatch(setLoading(true));

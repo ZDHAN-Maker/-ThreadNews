@@ -6,6 +6,7 @@ import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
 import { logout } from './features/auth/authSlice';
+import ThreadDetailPage from './pages/ThreadDetailPage';
 
 function App() {
   const dispatch = useDispatch();
@@ -53,6 +54,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/threads/:id" element={<ThreadDetailPage />} />
         <Route path="/register" element={<RegisterPage />} />
       </Routes>
     </BrowserRouter>

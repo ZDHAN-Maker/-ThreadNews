@@ -44,6 +44,14 @@ const api = {
     if (!response.ok) throw new Error(data.message);
     return data.data.threads;
   },
+
+  async getThreadDetail(id) {
+    const response = await fetch(
+      `https://forum-api.dicoding.dev/v1/threads/${id}`,
+    );
+    const json = await response.json();
+    return json.data;
+  },
 };
 
 export default api;

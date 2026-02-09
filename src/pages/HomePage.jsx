@@ -1,12 +1,14 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchThreads } from '../features/threads/threadsThunk';
+import { Link } from 'react-router-dom';
 
 function HomePage() {
     const dispatch = useDispatch();
     const { threads, isLoading, error } = useSelector(
         (state) => state.threads
     );
+
 
     useEffect(() => {
         dispatch(fetchThreads());
@@ -67,6 +69,12 @@ function HomePage() {
                                     {new Date(thread.createdAt).toLocaleDateString()}
                                 </span>
                                 <span>Dibuat oleh {thread.ownerId}</span>
+                                <Link
+                                    to={`/threads/${thread.id}`}
+                                    className="text-purple-700 font-semibold mt-2 block"
+                                >
+                                    {thread.title}
+                                </Link>
                             </div>
 
                         </div>
