@@ -1,63 +1,20 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import { fetchOwnProfile } from './features/auth/authThunk';
-import RegisterPage from './pages/RegisterPage';
-import LoginPage from './pages/LoginPage';
-import HomePage from './pages/HomePage';
-import { logout } from './features/auth/authSlice';
-import ThreadDetailPage from './pages/ThreadDetailPage';
+import { Routes, Route } from 'react-router-dom';
+import Login from './pages/LoginPage';
+import Threads from './pages/ThreadDetailPage';
+import Leaderboards from './pages/LeaderboardPage';
 
 function App() {
-  const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
-
-  useEffect(() => {
-    dispatch(fetchOwnProfile());
-  }, [dispatch]);
-
   return (
-    <BrowserRouter>
-      {/* NAVBAR */}
-      <nav className="flex items-center justify-between px-6 py-4 bg-slate-800 text-white">
-        <Link to="/" className="font-bold text-lg">
-          DICODING FORUM APP
-        </Link>
+    <Routes>
+      {/* Routing utama berada dalam AppLayout */}
+      <Route path="/" element={<AppLayout />}>
+        <Route index element={<Threads />} />
+        <Route path="leaderboards" element={<Leaderboards />} />
+      </Route>
 
-        <div className="flex gap-4 items-center">
-          {!user && (
-            <>
-              <Link to="/login" className="hover:underline">
-                Login
-              </Link>
-              <Link to="/register" className="hover:underline">
-                Register
-              </Link>
-            </>
-          )}
-
-          {user && (
-            <>
-              <span>Halo, {user.name}</span>
-              <button
-                onClick={() => dispatch(logout())}
-                className="bg-red-500 px-3 py-1 rounded hover:bg-red-600"
-              >
-                Logout
-              </button>
-            </>
-          )}
-        </div>
-      </nav>
-
-      {/* ROUTES */}
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/threads/:id" element={<ThreadDetailPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-      </Routes>
-    </BrowserRouter>
+      {/* Login berada di luar layout */}
+      <Route path="/login" element={<Login />} />
+    </Routes>
   );
 }
 
