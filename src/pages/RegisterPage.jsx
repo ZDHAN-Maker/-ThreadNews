@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { registerUser } from '../features/auth/authThunk';
 
 function RegisterPage() {
@@ -23,41 +23,71 @@ function RegisterPage() {
   };
 
   return (
-    <div>
-      <h2>Register</h2>
+    <div className="min-h-screen bg-gray-200 flex items-start justify-center pt-16">
+      <div className="w-full max-w-md">
 
-      {error && <p>{error}</p>}
-      {isLoading && <p>Loading...</p>}
+        <h2 className="text-2xl font-semibold mb-6 text-gray-800">
+          Register Page
+        </h2>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Nama"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
+        {error && (
+          <p className="text-red-500 text-sm mb-3">{error}</p>
+        )}
 
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+        {isLoading && (
+          <p className="text-gray-500 text-sm mb-3">Loading...</p>
+        )}
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+        <form onSubmit={handleSubmit} className="space-y-4">
 
-        <button type="submit" disabled={isLoading}>
-          Register
-        </button>
-      </form>
+          <input
+            type="text"
+            placeholder="Name"
+            className="w-full px-3 py-2 border border-gray-400 rounded-sm focus:outline-none focus:ring-1 focus:ring-slate-600"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+
+          <input
+            type="email"
+            placeholder="Email"
+            className="w-full px-3 py-2 border border-gray-400 rounded-sm focus:outline-none focus:ring-1 focus:ring-slate-600"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+
+          <input
+            type="password"
+            placeholder="Password"
+            className="w-full px-3 py-2 border border-gray-400 rounded-sm focus:outline-none focus:ring-1 focus:ring-slate-600"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full bg-slate-700 text-white py-2 rounded-sm hover:bg-slate-800 transition"
+          >
+            Register
+          </button>
+
+        </form>
+
+        <p className="mt-4 text-sm text-gray-700">
+          Sudah punya akun?{' '}
+          <Link
+            to="/login"
+            className="text-blue-600 hover:underline"
+          >
+            Login di sini.
+          </Link>
+        </p>
+
+      </div>
     </div>
   );
 }
