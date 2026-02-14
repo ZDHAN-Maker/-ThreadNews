@@ -1,20 +1,18 @@
 import { Routes, Route } from 'react-router-dom';
-import Login from './pages/LoginPage';
-import Threads from './pages/ThreadDetailPage';
-import Leaderboards from './pages/LeaderboardPage';
+import AppLayout from './components/AppLayout';
+import HomePage from './pages/HomePage';
+import LeaderboardPage from './pages/LeaderboardPage';
+import LoginPage from './pages/LoginPage';
 
 function App() {
   return (
-    <Routes>
-      {/* Routing utama berada dalam AppLayout */}
-      <Route path="/" element={<AppLayout />}>
-        <Route index element={<Threads />} />
-        <Route path="leaderboards" element={<Leaderboards />} />
-      </Route>
-
-      {/* Login berada di luar layout */}
-      <Route path="/login" element={<Login />} />
-    </Routes>
+    <AppLayout>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/leaderboards" element={<LeaderboardPage />} />
+        <Route path="/login" element={<LoginPage />} />
+      </Routes>
+    </AppLayout>
   );
 }
 

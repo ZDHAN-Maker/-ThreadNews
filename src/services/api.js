@@ -1,57 +1,64 @@
-const BASE_URL = "https://forum-api.dicoding.dev/v1";
+const api = (() => {
+  const BASE_URL = 'https://forum-api.dicoding.dev/v1';
 
-const api = {
-  async register({ name, email, password }) {
-    const response = await fetch(`${BASE_URL}/register`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password }),
-    });
+  function putAccessToken(token) {
+    localStorage.setItem('accessToken', token);
+  }
 
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.message);
-    return data.data;
-  },
+  function getAccessToken() {
+    return localStorage.getItem('accessToken');
+  }
 
-  async login({ email, password }) {
+  async function login({ email, password }) {
     const response = await fetch(`${BASE_URL}/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({ email, password }),
     });
 
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.message);
-    return data.data;
-  },
+    const responseJson = await response.json();
+    const { token } = responseJson.data;
 
-  async getOwnProfile(token) {
+    putAccessToken(token);
+  }
+
+  async function getOwnProfile() {
     const response = await fetch(`${BASE_URL}/users/me`, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${getAccessToken()}`,
       },
     });
 
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.message);
-    return data.data.user;
-  },
+    const responseJson = await response.json();
+    return responseJson.data.user;
+  }
 
-  async getThreads() {
+  async function getThreads() {
     const response = await fetch(`${BASE_URL}/threads`);
     const data = await response.json();
 
     if (!response.ok) throw new Error(data.message);
     return data.data.threads;
-  },
+  }
 
-  async getThreadDetail(id) {
+  async function getThreadDetail(id) {
     const response = await fetch(
       `https://forum-api.dicoding.dev/v1/threads/${id}`,
     );
     const json = await response.json();
     return json.data;
-  },
-};
+  }
+
+  return {
+    login,
+    getOwnProfile,
+    putAccessToken,
+    getThreadDetail,
+    getThreads,
+  };
+})();
 
 export default api;
+
