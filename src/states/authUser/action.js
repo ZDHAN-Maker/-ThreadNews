@@ -22,9 +22,16 @@ function unsetAuthUserActionCreator() {
 
 function asyncSetAuthUser({ email, password }) {
   return async (dispatch) => {
-    await api.login({ email, password });
-    const authUser = await api.getOwnProfile();
-    dispatch(setAuthUserActionCreator(authUser));
+    try {
+      await api.login({ email, password });
+
+      const authUser = await api.getOwnProfile();
+
+      dispatch(setAuthUserActionCreator(authUser));
+    } catch (error) {
+      console.error(error);
+      alert(error.message);
+    }
   };
 }
 

@@ -23,19 +23,16 @@ export const loginUser =
     dispatch(setError(null));
 
     try {
-      const response = await api.login({ email, password });
-
-      // Ambil accessToken dari response API
-      const token = response.data?.data?.accessToken;
+      // api.login SUDAH return string token
+      const token = await api.login({ email, password });
 
       if (!token) {
-        throw new Error("Token tidak ditemukan");
+        throw new Error("Token gagal dibuat");
       }
 
-      localStorage.setItem("token", token);
       dispatch(setToken(token));
 
-      const user = await api.getOwnProfile(token);
+      const user = await api.getOwnProfile();
       dispatch(setUser(user));
     } catch (error) {
       dispatch(setError(error.message));
@@ -45,13 +42,10 @@ export const loginUser =
     }
   };
 
-export const fetchOwnProfile = () => async (dispatch, getState) => {
-  const { token } = getState().auth;
-  if (!token) return;
-
+export const fetchOwnProfile = () => async (dispatch) => {
   dispatch(setLoading(true));
   try {
-    const user = await api.getOwnProfile(token);
+    const user = await api.getOwnProfile();
     dispatch(setUser(user));
   } catch {
     dispatch(logout());
