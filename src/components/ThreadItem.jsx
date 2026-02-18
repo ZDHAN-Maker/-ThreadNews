@@ -1,6 +1,12 @@
+import { Link } from "react-router-dom";
+import { FiThumbsUp, FiMessageSquare } from "react-icons/fi";
+
 function ThreadItem({ thread }) {
   return (
-    <div className="border-b pb-4 mb-6">
+    <Link
+      to={`/thread/${thread.id}`}
+      className="block border-b pb-4 mb-6 hover:bg-gray-50 transition rounded-lg p-2"
+    >
       {/* TAG */}
       <span className="px-3 py-1 bg-gray-100 border rounded text-sm text-gray-700">
         #{thread.category}
@@ -17,13 +23,28 @@ function ThreadItem({ thread }) {
       </p>
 
       {/* FOOTER */}
-      <div className="flex items-center gap-4 mt-3 text-sm text-gray-600">
-        <span>👍 {thread.upVotesBy.length}</span>
-        <span>💬 {thread.totalComments}</span>
+      <div className="flex items-center gap-5 mt-3 text-sm text-gray-600">
+
+        {/* Likes */}
+        <span className="flex items-center gap-1">
+          <FiThumbsUp size={18} />
+          {thread.upVotesBy.length}
+        </span>
+
+        {/* Comments */}
+        <span className="flex items-center gap-1">
+          <FiMessageSquare size={18} />
+          {thread.totalComments}
+        </span>
+
+        {/* Date */}
         <span>{new Date(thread.createdAt).toLocaleDateString()}</span>
-        <span className="font-semibold">Dibuat oleh {thread.ownerId}</span>
+
+        {/* Owner */}
+        <span className="font-semibold">Dibuat oleh {thread.owner?.name}</span>
+
       </div>
-    </div>
+    </Link>
   );
 }
 

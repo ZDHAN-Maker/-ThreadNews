@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { fetchThreadDetail } from '../features/threadDetail/threadDetailThunk';
+import CommentItem from '../components/CommentItem';
 
 function ThreadDetailPage() {
   const { id } = useParams();
@@ -19,7 +20,7 @@ function ThreadDetailPage() {
   return (
     <div className="max-w-3xl mx-auto py-6 px-4">
 
-      {/* CATEGORY TAG */}
+      {/* CATEGORY */}
       <span className="px-3 py-1 bg-gray-100 border rounded text-sm text-gray-700">
         #{thread.category}
       </span>
@@ -29,12 +30,14 @@ function ThreadDetailPage() {
         {thread.title}
       </h1>
 
-      {/* Info */}
+      {/* INFO */}
       <div className="flex items-center gap-3 text-sm text-gray-500 mb-6">
         <div className="w-7 h-7 rounded-full bg-orange-100 flex items-center justify-center font-bold text-xs">
-          {thread.owner.name[0]}
+          {thread.owner?.name?.[0] || "?"}
         </div>
-        <span>Dibuat oleh <strong>{thread.owner.name}</strong></span>
+        <span>
+          Dibuat oleh <strong>{thread.owner.name}</strong>
+        </span>
         <span>{new Date(thread.createdAt).toLocaleDateString()}</span>
       </div>
 
@@ -61,33 +64,7 @@ function ThreadDetailPage() {
       </h2>
 
       {thread.comments.map((comment) => (
-        <div key={comment.id} className="border-t py-4">
-          
-          {/* Comment Header */}
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-3">
-              <div className="w-7 h-7 rounded-full bg-orange-100 flex items-center justify-center font-bold text-xs">
-                {comment.owner.name[0]}
-              </div>
-              <span className="font-semibold">{comment.owner.name}</span>
-            </div>
-
-            <span className="text-xs text-gray-500">
-              {new Date(comment.createdAt).toLocaleDateString()}
-            </span>
-          </div>
-
-          {/* Comment Body */}
-          <p className="text-gray-800 ml-10">
-            {comment.content}
-          </p>
-
-          {/* Likes & Dislikes */}
-          <div className="flex items-center gap-4 ml-10 mt-2 text-sm text-gray-600">
-            <span>👍 {comment.upVotesBy?.length || 0}</span>
-            <span>👎 {comment.downVotesBy?.length || 0}</span>
-          </div>
-        </div>
+        <CommentItem key={comment.id} comment={comment} />
       ))}
 
     </div>

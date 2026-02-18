@@ -22,7 +22,7 @@ const api = {
   async getThreadDetail(id) {
     const response = await fetch(`${BASE_URL}/threads/${id}`);
     const json = await response.json();
-    return json.data;
+    return json.data.detailThread;
   },
 
   async register({ name, email, password }) {
