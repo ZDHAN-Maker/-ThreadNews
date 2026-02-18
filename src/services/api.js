@@ -91,9 +91,7 @@ const api = (() => {
   async function getThreadDetail(id) {
     const response = await fetch(`${BASE_URL}/threads/${id}`);
     const json = await response.json();
-
-    if (!response.ok) throw new Error(json.message);
-    return json.data;
+    return json.data.detailThread;
   }
 
   return {
