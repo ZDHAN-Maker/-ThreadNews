@@ -6,9 +6,7 @@ import { fetchThreadDetail } from '../features/threadDetail/threadDetailThunk';
 function ThreadDetailPage() {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { thread, isLoading, error } = useSelector(
-    (state) => state.threadDetail
-  );
+  const { thread, isLoading, error } = useSelector((state) => state.threadDetail);
 
   useEffect(() => {
     dispatch(fetchThreadDetail(id));
@@ -20,39 +18,78 @@ function ThreadDetailPage() {
 
   return (
     <div className="max-w-3xl mx-auto py-6 px-4">
-      {/* THREAD */}
-      <h1 className="text-2xl font-bold mb-2">
+
+      {/* CATEGORY TAG */}
+      <span className="px-3 py-1 bg-gray-100 border rounded text-sm text-gray-700">
+        #{thread.category}
+      </span>
+
+      {/* TITLE */}
+      <h1 className="text-3xl font-bold mt-3 mb-2 text-gray-900">
         {thread.title}
       </h1>
 
-      <div className="text-sm text-gray-500 mb-4">
-        Dibuat oleh {thread.owner.name} ·{' '}
-        {new Date(thread.createdAt).toLocaleDateString()}
+      {/* Info */}
+      <div className="flex items-center gap-3 text-sm text-gray-500 mb-6">
+        <div className="w-7 h-7 rounded-full bg-orange-100 flex items-center justify-center font-bold text-xs">
+          {thread.owner.name[0]}
+        </div>
+        <span>Dibuat oleh <strong>{thread.owner.name}</strong></span>
+        <span>{new Date(thread.createdAt).toLocaleDateString()}</span>
       </div>
 
-      <p className="mb-6 text-gray-800">
+      {/* BODY */}
+      <p className="text-gray-800 mb-8 leading-relaxed">
         {thread.body}
       </p>
 
-      {/* KOMENTAR */}
-      <h2 className="font-semibold mb-4">
+      {/* COMMENT FORM */}
+      <h2 className="font-semibold mb-2">Beri komentar</h2>
+
+      <textarea
+        className="w-full border rounded-md h-28 p-3 mb-3"
+        placeholder="Tulis komentar..."
+      ></textarea>
+
+      <button className="w-full bg-slate-700 text-white py-2 rounded-md">
+        Kirim
+      </button>
+
+      {/* COMMENT LIST */}
+      <h2 className="font-semibold text-lg mt-8 mb-4">
         Komentar ({thread.comments.length})
       </h2>
 
       {thread.comments.map((comment) => (
-        <div
-          key={comment.id}
-          className="border-t py-4"
-        >
-          <p className="text-gray-800">
+        <div key={comment.id} className="border-t py-4">
+          
+          {/* Comment Header */}
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-3">
+              <div className="w-7 h-7 rounded-full bg-orange-100 flex items-center justify-center font-bold text-xs">
+                {comment.owner.name[0]}
+              </div>
+              <span className="font-semibold">{comment.owner.name}</span>
+            </div>
+
+            <span className="text-xs text-gray-500">
+              {new Date(comment.createdAt).toLocaleDateString()}
+            </span>
+          </div>
+
+          {/* Comment Body */}
+          <p className="text-gray-800 ml-10">
             {comment.content}
           </p>
-          <div className="text-xs text-gray-500 mt-1">
-            {comment.owner.name} ·{' '}
-            {new Date(comment.createdAt).toLocaleDateString()}
+
+          {/* Likes & Dislikes */}
+          <div className="flex items-center gap-4 ml-10 mt-2 text-sm text-gray-600">
+            <span>👍 {comment.upVotesBy?.length || 0}</span>
+            <span>👎 {comment.downVotesBy?.length || 0}</span>
           </div>
         </div>
       ))}
+
     </div>
   );
 }
