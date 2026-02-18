@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchThreads } from '../features/threads/threadsThunk';
 import { Link } from 'react-router-dom';
+import BottomNav from "../components/BottomNav";
 
 function HomePage() {
     const dispatch = useDispatch();
@@ -84,29 +85,7 @@ function HomePage() {
                 {/* RIGHT SIDEBAR */}
                 <aside className="w-1/4 p-6 hidden md:block"></aside>
             </div>
-
-            {/* FLOATING ADD BUTTON */}
-            <button className="fixed bottom-20 right-6 bg-slate-700 text-white w-12 h-12 rounded-full text-2xl shadow-lg">
-                +
-            </button>
-
-            {/* BOTTOM NAV */}
-            <footer className="border-t bg-white py-3 flex justify-around text-sm">
-                <button className="flex flex-col items-center">
-                    💬
-                    <span>Threads</span>
-                </button>
-                <button className="flex flex-col items-center">
-                    📊
-                    <span>Leaderboards</span>
-                </button>
-                <button className="flex flex-col items-center">
-                    🚪
-                    <span>Logout</span>
-                </button>
-            </footer>
         </div>
     );
 }
-
 export default HomePage;
