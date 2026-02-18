@@ -3,8 +3,8 @@ import { FiMessageSquare, FiBarChart2, FiLogIn } from 'react-icons/fi';
 
 function BottomNav() {
   return (
-    <footer className="bottom-nav border-t bg-white py-3 flex justify-around text-sm">
-      
+    <footer className="fixed bottom-0 left-0 w-full border-t bg-white py-3 flex justify-around text-sm z-50">
+
       <Link to="/" className="flex flex-col items-center text-gray-700 hover:text-purple-600">
         <FiMessageSquare size={22} />
         <span className="text-xs mt-1">Threads</span>

@@ -14,7 +14,8 @@ function ThreadItem({ thread }) {
         <span>
           {new Date(thread.createdAt).toLocaleDateString()}
         </span>
-        <span>Dibuat oleh {thread.owner.name}</span>
+        <span>Dibuat oleh {thread.ownerId}</span>
+
       </div>
     </div>
   );
