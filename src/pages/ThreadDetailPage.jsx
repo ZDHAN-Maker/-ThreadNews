@@ -3,11 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { fetchThreadDetail } from '../features/threadDetail/threadDetailThunk';
 import CommentItem from '../components/CommentItem';
+import { Link } from "react-router-dom";
 
 function ThreadDetailPage() {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { thread, isLoading, error } = useSelector((state) => state.threadDetail);
+  const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     dispatch(fetchThreadDetail(id));
@@ -46,27 +48,32 @@ function ThreadDetailPage() {
         {thread.body}
       </p>
 
-      {/* COMMENT FORM */}
-      <h2 className="font-semibold mb-2">Beri komentar</h2>
+      {/* COMMENT SECTION */}
+      <div className="mt-8">
+        <h2 className="font-semibold mb-2">Beri komentar</h2>
 
-      <textarea
-        className="w-full border rounded-md h-28 p-3 mb-3"
-        placeholder="Tulis komentar..."
-      ></textarea>
+        {!user ? (
+          <p className="text-blue-600">
+            <a href="/login" className="underline">
+              Login
+            </a>
+            <a>
+              untuk memberikan komentar
+            </a>
+          </p>
+        ) : (
+          <>
+            <textarea
+              className="w-full border rounded-md h-28 p-3 mb-3"
+              placeholder="Tulis komentar..."
+            ></textarea>
 
-      <button className="w-full bg-slate-700 text-white py-2 rounded-md">
-        Kirim
-      </button>
-
-      {/* COMMENT LIST */}
-      <h2 className="font-semibold text-lg mt-8 mb-4">
-        Komentar ({thread.comments.length})
-      </h2>
-
-      {thread.comments.map((comment) => (
-        <CommentItem key={comment.id} comment={comment} />
-      ))}
-
+            <button className="w-full bg-slate-700 text-white py-2 rounded-md hover:bg-slate-800">
+              Kirim
+            </button>
+          </>
+        )}
+      </div>
     </div>
   );
 }
