@@ -5,10 +5,7 @@ export const fetchThreads = () => async (dispatch) => {
   dispatch(setLoading(true));
 
   try {
-    const [threads, users] = await Promise.all([
-      api.getThreads(),
-      api.getUsers(),
-    ]);
+    const [threads, users] = await Promise.all([api.getThreads(), api.getUsers()]);
 
     const threadsWithOwner = threads.map((thread) => ({
       ...thread,

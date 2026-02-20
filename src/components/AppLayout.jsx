@@ -1,12 +1,11 @@
-import { useSelector } from "react-redux";
-import BottomNav from "./BottomNav";
+import { useSelector } from 'react-redux';
+import BottomNav from './BottomNav';
 
 function AppLayout({ children }) {
   const authUser = useSelector((state) => state.authUser);
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
-
       {/* HEADER FIXED */}
       <header className="bg-slate-700 text-white py-4 fixed top-0 left-0 w-full z-50">
         <div className="max-w-4xl px-6">
@@ -19,9 +18,7 @@ function AppLayout({ children }) {
 
       {/* MAIN */}
       <main className="flex-1 w-full flex justify-center">
-        <div className="w-full max-w-4xl bg-white px-8 py-6">
-          {children}
-        </div>
+        <div className="w-full max-w-4xl bg-white px-8 py-6">{children}</div>
       </main>
 
       {/* BOTTOM NAV */}
@@ -30,7 +27,6 @@ function AppLayout({ children }) {
           <BottomNav authUser={authUser} />
         </div>
       </div>
-
     </div>
   );
 }

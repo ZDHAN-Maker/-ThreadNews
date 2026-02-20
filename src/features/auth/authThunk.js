@@ -1,6 +1,6 @@
-import api from "../../services/api";
-import { setLoading, setToken, setUser, setError } from "./authSlice";
-import { logout } from "./authSlice";
+import api from '../../services/api';
+import { setLoading, setToken, setUser, setError } from './authSlice';
+import { logout } from './authSlice';
 
 export const registerUser = (payload) => async (dispatch) => {
   dispatch(setLoading(true));
@@ -27,7 +27,7 @@ export const loginUser =
       const token = await api.login({ email, password });
 
       if (!token) {
-        throw new Error("Token gagal dibuat");
+        throw new Error('Token gagal dibuat');
       }
 
       dispatch(setToken(token));

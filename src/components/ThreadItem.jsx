@@ -1,11 +1,11 @@
-import { Link } from "react-router-dom";
-import { FiThumbsUp, FiMessageSquare } from "react-icons/fi";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import "dayjs/locale/id";
+import { Link } from 'react-router-dom';
+import { FiThumbsUp, FiMessageSquare } from 'react-icons/fi';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import 'dayjs/locale/id';
 
 dayjs.extend(relativeTime);
-dayjs.locale("id");
+dayjs.locale('id');
 
 function ThreadItem({ thread }) {
   return (
@@ -19,9 +19,7 @@ function ThreadItem({ thread }) {
       </span>
 
       {/* TITLE */}
-      <h3 className="text-xl text-gray-800 font-semibold mt-3 hover:underline">
-        {thread.title}
-      </h3>
+      <h3 className="text-xl text-gray-800 font-semibold mt-3 hover:underline">{thread.title}</h3>
 
       {/* BODY (HTML parsed + dipotong) */}
       <div
@@ -33,7 +31,6 @@ function ThreadItem({ thread }) {
 
       {/* FOOTER */}
       <div className="flex items-center gap-5 mt-4 text-sm text-gray-500">
-
         {/* Likes */}
         <span className="flex items-center gap-1">
           <FiThumbsUp size={18} />
@@ -47,15 +44,12 @@ function ThreadItem({ thread }) {
         </span>
 
         {/* Date */}
-        <span>
-          {dayjs(thread.createdAt).fromNow()}
-        </span>
+        <span>{dayjs(thread.createdAt).fromNow()}</span>
 
         {/* Owner */}
         <span>
           Dibuat oleh <span className="font-semibold">{thread.owner?.name}</span>
         </span>
-
       </div>
     </Link>
   );

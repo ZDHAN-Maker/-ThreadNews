@@ -4,7 +4,7 @@ import HomePage from './pages/HomePage';
 import LeaderboardPage from './pages/LeaderboardPage';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
-import ThreadDetailPage from "./pages/ThreadDetailPage";
+import ThreadDetailPage from './pages/ThreadDetailPage';
 
 function App() {
   return (

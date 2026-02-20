@@ -1,7 +1,7 @@
-import api from "../../utils/api";
+import api from '../../utils/api';
 
 const ActionType = {
-  RECEIVE_LEADERBOARDS: "RECEIVE_LEADERBOARDS",
+  RECEIVE_LEADERBOARDS: 'RECEIVE_LEADERBOARDS',
 };
 
 function receiveLeaderboardsActionCreator(leaderboards) {
@@ -24,8 +24,4 @@ function asyncReceiveLeaderboards() {
   };
 }
 
-export {
-  ActionType,
-  receiveLeaderboardsActionCreator,
-  asyncReceiveLeaderboards,
-};
+export { ActionType, receiveLeaderboardsActionCreator, asyncReceiveLeaderboards };
