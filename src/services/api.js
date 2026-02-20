@@ -94,6 +94,15 @@ const api = (() => {
     return json.data.detailThread;
   }
 
+  async function getUsers() {
+    const response = await fetch(`${BASE_URL}/users`);
+    const data = await response.json();
+
+    if (!response.ok) throw new Error(data.message);
+
+    return data.data.users;
+  }
+
   return {
     register,
     login,
@@ -101,6 +110,7 @@ const api = (() => {
     putAccessToken,
     getThreadDetail,
     getThreads,
+    getUsers,
   };
 })();
 
