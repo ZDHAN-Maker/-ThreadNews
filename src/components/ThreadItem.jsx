@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { FiThumbsUp, FiMessageSquare } from "react-icons/fi";
-
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 function ThreadItem({ thread }) {
   return (
     <Link

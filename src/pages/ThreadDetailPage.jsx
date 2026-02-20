@@ -20,7 +20,8 @@ function ThreadDetailPage() {
   if (!thread) return null;
 
   return (
-    <div className="max-w-3xl mx-auto py-6 px-4">
+
+    <div className="w-full">
 
       {/* CATEGORY */}
       <span className="px-3 py-1 bg-gray-100 border rounded text-sm text-gray-700">
@@ -54,12 +55,10 @@ function ThreadDetailPage() {
 
         {!user ? (
           <p className="text-blue-600">
-            <a href="/login" className="underline">
+            <Link to="/login" className="underline">
               Login
-            </a>
-            <a>
-              untuk memberikan komentar
-            </a>
+            </Link>{" "}
+            untuk memberikan komentar
           </p>
         ) : (
           <>
