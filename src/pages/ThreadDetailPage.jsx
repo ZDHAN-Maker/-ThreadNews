@@ -27,7 +27,7 @@ function ThreadDetailPage() {
   if (!thread) return null;
 
   return (
-    <div className="w-full flex flex-col min-h-full">
+    <div className="w-full flex flex-col min-h-full pb-24">
 
       {/* CONTENT */}
       <div className="flex-1">
@@ -73,8 +73,11 @@ function ThreadDetailPage() {
 
         {/* FORM */}
         {!user ? (
-          <p className="text-blue-600 mb-6">
-            <Link to="/login" className="underline">
+          <p className="mb-6 text-gray-800">
+            <Link
+              to="/login"
+              className="text-blue-600 hover:text-blue-700 underline font-medium"
+            >
               Login
             </Link>{" "}
             untuk memberikan komentar
