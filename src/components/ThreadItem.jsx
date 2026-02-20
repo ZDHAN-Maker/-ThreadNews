@@ -19,7 +19,7 @@ function ThreadItem({ thread }) {
       </span>
 
       {/* TITLE */}
-      <h3 className="text-xl text-purple-700 font-semibold mt-3 hover:underline">
+      <h3 className="text-xl text-gray-800 font-semibold mt-3 hover:underline">
         {thread.title}
       </h3>
 
