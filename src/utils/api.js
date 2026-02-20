@@ -1,60 +1,119 @@
-const BASE_URL = 'https://forum-api.dicoding.dev/v1';
+const api = (() => {
+  const BASE_URL = 'https://forum-api.dicoding.dev/v1';
 
-async function fetchWithAuth(url, options = {}) {
-  const token = localStorage.getItem('accessToken');
+  function putAccessToken(token) {
+    localStorage.setItem('accessToken', token);
+  }
 
-  return fetch(url, {
-    ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      ...(token && { Authorization: `Bearer ${token}` }),
-    },
-  });
-}
+  function getAccessToken() {
+    return localStorage.getItem('accessToken');
+  }
 
-const api = {
-  async getThreads() {
-    const response = await fetch(`${BASE_URL}/threads`);
-    const json = await response.json();
-    return json.data;
-  },
+  async function fetchWithAuth(url, options = {}) {
+    const token = getAccessToken();
 
-  async getThreadDetail(id) {
-    const response = await fetch(`${BASE_URL}/threads/${id}`);
-    const json = await response.json();
-    return json.data.detailThread;
-  },
+    return fetch(url, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+    });
+  }
 
-  async register({ name, email, password }) {
+  async function register({ name, email, password }) {
     const response = await fetch(`${BASE_URL}/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, password }),
     });
-    return response.json();
-  },
 
-  async login({ email, password }) {
+    const json = await response.json();
+    if (!response.ok) throw new Error(json.message);
+
+    return json;
+  }
+
+  async function login({ email, password }) {
     const response = await fetch(`${BASE_URL}/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
     });
-    return response.json();
-  },
 
-  async getOwnProfile() {
+    const json = await response.json();
+    if (!response.ok) throw new Error(json.message);
+
+    const token = json.data?.token;
+    if (!token) throw new Error('Token tidak ditemukan dari API');
+
+    putAccessToken(token);
+    return token;
+  }
+
+  async function getOwnProfile() {
     const response = await fetchWithAuth(`${BASE_URL}/users/me`);
     const json = await response.json();
+
+    if (!response.ok) throw new Error(json.message);
+    return json.data?.user;
+  }
+
+  async function getThreads() {
+    const response = await fetch(`${BASE_URL}/threads`);
+    const json = await response.json();
+
+    if (!response.ok) throw new Error(json.message);
+    return json.data.threads;
+  }
+
+  async function getThreadDetail(id) {
+    const response = await fetch(`${BASE_URL}/threads/${id}`);
+    const json = await response.json();
+
+    if (!response.ok) throw new Error(json.message);
+    return json.data.detailThread;
+  }
+
+  async function createThread({ title, category, body }) {
+    const response = await fetchWithAuth(`${BASE_URL}/threads`, {
+      method: 'POST',
+      body: JSON.stringify({ title, category, body }),
+    });
+
+    const json = await response.json();
+
+    if (!response.ok) throw new Error(json.message);
     return json.data;
-  },
+  }
 
-  async getLeaderboards() {
-    const response = await fetch('https://forum-api.dicoding.dev/v1/leaderboards');
+  async function getUsers() {
+    const response = await fetch(`${BASE_URL}/users`);
+    const json = await response.json();
 
-    const responseJson = await response.json();
-    return responseJson.data;
-  },
-};
+    if (!response.ok) throw new Error(json.message);
+    return json.data.users;
+  }
+
+  async function getLeaderboards() {
+    const response = await fetch(`${BASE_URL}/leaderboards`);
+    const json = await response.json();
+
+    if (!response.ok) throw new Error(json.message);
+    return json.data;
+  }
+
+  return {
+    register,
+    login,
+    putAccessToken,
+    getOwnProfile,
+    getThreads,
+    getThreadDetail,
+    createThread, 
+    getUsers,
+    getLeaderboards,
+  };
+})();
 
 export default api;

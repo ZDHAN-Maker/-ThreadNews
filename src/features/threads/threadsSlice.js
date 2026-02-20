@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { fetchThreads, addThread } from './threadsThunk';
 
 const threadsSlice = createSlice({
   name: 'threads',
@@ -7,18 +8,38 @@ const threadsSlice = createSlice({
     isLoading: false,
     error: null,
   },
-  reducers: {
-    setThreads(state, action) {
-      state.threads = action.payload;
-    },
-    setLoading(state, action) {
-      state.isLoading = action.payload;
-    },
-    setError(state, action) {
-      state.error = action.payload;
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+
+      // FETCH THREADS
+      .addCase(fetchThreads.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchThreads.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.threads = action.payload;
+      })
+      .addCase(fetchThreads.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+
+      // ADD THREAD
+      .addCase(addThread.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(addThread.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.threads.unshift(action.payload); // auto refresh
+      })
+      .addCase(addThread.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      });
   },
 });
 
-export const { setThreads, setLoading, setError } = threadsSlice.actions;
 export default threadsSlice.reducer;

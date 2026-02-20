@@ -1,21 +1,34 @@
-import api from '../../services/api';
-import { setThreads, setLoading, setError } from './threadsSlice';
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import api from '../../utils/api';
 
-export const fetchThreads = () => async (dispatch) => {
-  dispatch(setLoading(true));
-
+export const fetchThreads = createAsyncThunk('threads/fetchThreads', async (_, thunkAPI) => {
   try {
-    const [threads, users] = await Promise.all([api.getThreads(), api.getUsers()]);
+    const threads = await api.getThreads();
+    const users = await api.getUsers();
 
-    const threadsWithOwner = threads.map((thread) => ({
-      ...thread,
-      owner: users.find((user) => user.id === thread.ownerId),
-    }));
+    // Gabungkan owner info
+    const enriched = threads.map((thread) => {
+      const owner = users.find((u) => u.id === thread.ownerId);
+      return {
+        ...thread,
+        owner: owner ? { name: owner.name, email: owner.email, avatar: owner.avatar } : null,
+      };
+    });
 
-    dispatch(setThreads(threadsWithOwner));
-  } catch (error) {
-    dispatch(setError(error.message));
-  } finally {
-    dispatch(setLoading(false));
+    return enriched;
+  } catch (err) {
+    return thunkAPI.rejectWithValue(err.message);
   }
-};
+});
+
+export const addThread = createAsyncThunk(
+  'threads/addThread',
+  async ({ title, category, body }, thunkAPI) => {
+    try {
+      const response = await api.createThread({ title, category, body });
+      return response.thread;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.message);
+    }
+  }
+);

@@ -12,5 +12,4 @@ function authUserReducer(authUser = null, action) {
       return authUser;
   }
 }
-
 export default authUserReducer;

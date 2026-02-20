@@ -1,12 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { fetchThreads } from '../features/threads/threadsThunk';
 import ThreadItem from '../components/ThreadItem';
 import CategorySidebar from '../components/CategorySidebar';
 
 function HomePage() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { threads, isLoading, error } = useSelector((state) => state.threads);
+  const { user } = useSelector((state) => state.auth);
 
   const [selectedCategory, setSelectedCategory] = useState(null);
 
@@ -21,7 +25,8 @@ function HomePage() {
     : threads;
 
   return (
-    <div className="w-full">
+    <div className="w-full relative pb-20">
+      {/* Sidebar Kategori */}
       <section className="mb-6">
         <CategorySidebar
           categories={categories}
@@ -30,18 +35,42 @@ function HomePage() {
         />
       </section>
 
-      <h2 className="font-semibold mb-4">
-        {selectedCategory ? `Kategori: #${selectedCategory}` : 'Diskusi tersedia'}
-      </h2>
+      {/* HEADER */}
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="font-semibold">
+          {selectedCategory ? `Kategori: #${selectedCategory}` : 'Diskusi tersedia'}
+        </h2>
+      </div>
 
-      {isLoading && <p>Loading...</p>}
+      {/* Loading */}
+      {isLoading && <p className="text-gray-600 animate-pulse">Loading...</p>}
+
+      {/* Error */}
       {error && <p className="text-red-500">{error}</p>}
 
+      {/* List Thread */}
       <div className="space-y-4">
+        {!isLoading && filteredThreads.length === 0 && (
+          <p className="text-gray-500">Tidak ada diskusi.</p>
+        )}
+
         {filteredThreads.map((thread) => (
           <ThreadItem key={thread.id} thread={thread} />
         ))}
       </div>
+
+      {/* TOMBOL '+' DI KANAN BAWAH */}
+      {user && (
+        <button
+          onClick={() => navigate('/new')}
+          className="fixed bottom-24 right-6 w-14 h-14 bg-gray-600 text-white text-3xl 
+                     rounded-full shadow-lg flex items-center justify-center 
+                     hover:bg-gray-700 transition-all"
+          title="Buat Diskusi Baru"
+        >
+          +
+        </button>
+      )}
     </div>
   );
 }
