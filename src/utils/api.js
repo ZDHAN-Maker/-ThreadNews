@@ -103,6 +103,64 @@ const api = (() => {
     return json.data;
   }
 
+  async function createComment(threadId, { content }) {
+    const response = await fetch(`${BASE_URL}/threads/${threadId}/comments`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getAccessToken()}`,
+      },
+      body: JSON.stringify({ content }),
+    });
+
+    const data = await response.json();
+    return data.data.comment;
+  }
+
+  async function upvoteComment(threadId, commentId) {
+    const response = await fetch(`${BASE_URL}/threads/${threadId}/comments/${commentId}/up-vote`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${getAccessToken()}`,
+      },
+    });
+
+    const data = await response.json();
+    return data.data.comment;
+  }
+
+  async function downvoteComment(threadId, commentId) {
+    const response = await fetch(
+      `${BASE_URL}/threads/${threadId}/comments/${commentId}/down-vote`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getAccessToken()}`,
+        },
+      }
+    );
+
+    const data = await response.json();
+    return data.data.comment;
+  }
+
+  async function neutralizeCommentVote(threadId, commentId) {
+    const response = await fetch(
+      `${BASE_URL}/threads/${threadId}/comments/${commentId}/neutral-vote`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getAccessToken()}`,
+        },
+      }
+    );
+
+    const data = await response.json();
+    return data.data.comment;
+  }
+
   return {
     register,
     login,
@@ -110,9 +168,13 @@ const api = (() => {
     getOwnProfile,
     getThreads,
     getThreadDetail,
-    createThread, 
+    createThread,
     getUsers,
     getLeaderboards,
+    createComment,
+    upvoteComment,
+    downvoteComment,
+    neutralizeCommentVote,
   };
 })();
 

@@ -6,6 +6,11 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/id';
 import { FiThumbsUp, FiThumbsDown } from 'react-icons/fi';
+import {
+  upvoteCommentThunk,
+  downvoteCommentThunk,
+  neutralizeCommentVoteThunk,
+} from '../features/threadDetail/threadDetailThunk';
 
 dayjs.extend(relativeTime);
 dayjs.locale('id');
@@ -23,11 +28,33 @@ function ThreadDetailPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (!comment.trim()) return;
-
     dispatch(addComment({ threadId: id, content: comment }));
     setComment('');
+  };
+
+  // 🔥 HANDLE UPVOTE
+  const handleUpvote = (item) => {
+    if (!user) return;
+    const alreadyUpvoted = item.upVotesBy.includes(user.id);
+
+    if (alreadyUpvoted) {
+      dispatch(neutralizeCommentVoteThunk({ threadId: id, commentId: item.id }));
+    } else {
+      dispatch(upvoteCommentThunk({ threadId: id, commentId: item.id }));
+    }
+  };
+
+  // 🔥 HANDLE DOWNVOTE
+  const handleDownvote = (item) => {
+    if (!user) return;
+    const alreadyDownvoted = item.downVotesBy.includes(user.id);
+
+    if (alreadyDownvoted) {
+      dispatch(neutralizeCommentVoteThunk({ threadId: id, commentId: item.id }));
+    } else {
+      dispatch(downvoteCommentThunk({ threadId: id, commentId: item.id }));
+    }
   };
 
   if (isLoading) return <p className="p-6">Loading...</p>;
@@ -36,6 +63,7 @@ function ThreadDetailPage() {
 
   return (
     <div className="w-full flex flex-col min-h-full pb-24">
+
       {/* CONTENT */}
       <div className="flex-1">
         <span className="px-3 py-1 bg-gray-100 border rounded text-sm text-gray-700">
@@ -104,6 +132,8 @@ function ThreadDetailPage() {
         <div>
           {thread.comments?.map((item) => (
             <div key={item.id} className="py-4 border-b">
+
+              {/* Header */}
               <div className="flex justify-between items-start mb-2">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-full bg-orange-200 flex items-center justify-center text-xs font-bold text-gray-700">
@@ -120,26 +150,53 @@ function ThreadDetailPage() {
                 </span>
               </div>
 
+              {/* Content */}
               <div
                 className="text-sm text-gray-800 mb-3 leading-relaxed"
                 dangerouslySetInnerHTML={{ __html: item.content }}
               />
 
+              {/* Like Dislike */}
               <div className="flex items-center gap-6 text-sm text-gray-600">
-                <div className="flex items-center gap-1">
-                  <FiThumbsUp size={16} />
+
+                {/* UPVOTE */}
+                <div
+                  className="flex items-center gap-1 cursor-pointer"
+                  onClick={() => handleUpvote(item)}
+                >
+                  <FiThumbsUp
+                    size={16}
+                    className={
+                      item.upVotesBy.includes(user?.id)
+                        ? 'text-blue-600'
+                        : 'text-gray-600'
+                    }
+                  />
                   <span>{item.upVotesBy?.length || 0}</span>
                 </div>
 
-                <div className="flex items-center gap-1">
-                  <FiThumbsDown size={16} />
+                {/* DOWNVOTE */}
+                <div
+                  className="flex items-center gap-1 cursor-pointer"
+                  onClick={() => handleDownvote(item)}
+                >
+                  <FiThumbsDown
+                    size={16}
+                    className={
+                      item.downVotesBy.includes(user?.id)
+                        ? 'text-red-600'
+                        : 'text-gray-600'
+                    }
+                  />
                   <span>{item.downVotesBy?.length || 0}</span>
                 </div>
+
               </div>
             </div>
           ))}
         </div>
       </div>
+
     </div>
   );
 }

@@ -1,5 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchThreadDetail, addComment } from './threadDetailThunk';
+import {
+  fetchThreadDetail,
+  addComment,
+  upvoteCommentThunk,
+  downvoteCommentThunk,
+  neutralizeCommentVoteThunk,
+} from './threadDetailThunk';
 
 const threadDetailSlice = createSlice({
   name: 'threadDetail',
@@ -29,8 +35,18 @@ const threadDetailSlice = createSlice({
       })
       .addCase(addComment.fulfilled, (state, action) => {
         if (state.thread) {
-          state.thread.comments = [action.payload, ...(state.thread.comments || [])];
+          const newComment = action.payload.comment;
+          state.thread.comments = [newComment, ...state.thread.comments];
         }
+      })
+      .addCase(upvoteCommentThunk.fulfilled, (state, action) => {
+        state.thread = action.payload;
+      })
+      .addCase(downvoteCommentThunk.fulfilled, (state, action) => {
+        state.thread = action.payload;
+      })
+      .addCase(neutralizeCommentVoteThunk.fulfilled, (state, action) => {
+        state.thread = action.payload;
       });
   },
 });
