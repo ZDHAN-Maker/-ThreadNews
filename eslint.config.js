@@ -5,7 +5,8 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import { defineConfig } from 'eslint/config';
 
 export default defineConfig([
-  // Base JavaScript Rules
+  js.configs.recommended,
+
   {
     files: ['**/*.{js,jsx}'],
     ignores: ['dist/**', 'build/**'],
@@ -26,13 +27,17 @@ export default defineConfig([
       react,
       'react-hooks': reactHooks,
     },
-    extends: [js.configs.recommended, react.configs.flat.recommended],
-
     rules: {
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
+      'no-unused-vars': 'off',
+      'react/jsx-uses-vars': 'error',
+
+      semi: ['error', 'always'],
+      quotes: ['error', 'single'],
+      indent: ['error', 2],
     },
   },
 ]);

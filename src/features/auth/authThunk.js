@@ -18,29 +18,29 @@ export const registerUser = (payload) => async (dispatch) => {
 
 export const loginUser =
   ({ email, password }) =>
-  async (dispatch) => {
-    dispatch(setLoading(true));
-    dispatch(setError(null));
+    async (dispatch) => {
+      dispatch(setLoading(true));
+      dispatch(setError(null));
 
-    try {
+      try {
       // api.login SUDAH return string token
-      const token = await api.login({ email, password });
+        const token = await api.login({ email, password });
 
-      if (!token) {
-        throw new Error('Token gagal dibuat');
+        if (!token) {
+          throw new Error('Token gagal dibuat');
+        }
+
+        dispatch(setToken(token));
+
+        const user = await api.getOwnProfile();
+        dispatch(setUser(user));
+      } catch (error) {
+        dispatch(setError(error.message));
+        throw error;
+      } finally {
+        dispatch(setLoading(false));
       }
-
-      dispatch(setToken(token));
-
-      const user = await api.getOwnProfile();
-      dispatch(setUser(user));
-    } catch (error) {
-      dispatch(setError(error.message));
-      throw error;
-    } finally {
-      dispatch(setLoading(false));
-    }
-  };
+    };
 
 export const fetchOwnProfile = () => async (dispatch) => {
   dispatch(setLoading(true));
