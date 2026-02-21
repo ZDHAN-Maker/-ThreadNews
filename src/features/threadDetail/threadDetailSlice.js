@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchThreadDetail } from './threadDetailThunk';
+import { fetchThreadDetail, addComment } from './threadDetailThunk';
 
 const threadDetailSlice = createSlice({
   name: 'threadDetail',
@@ -26,6 +26,11 @@ const threadDetailSlice = createSlice({
       .addCase(fetchThreadDetail.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
+      })
+      .addCase(addComment.fulfilled, (state, action) => {
+        if (state.thread) {
+          state.thread.comments = [action.payload, ...(state.thread.comments || [])];
+        }
       });
   },
 });

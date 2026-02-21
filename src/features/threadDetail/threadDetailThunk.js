@@ -5,3 +5,11 @@ export const fetchThreadDetail = createAsyncThunk('threadDetail/fetch', async (i
   const detail = await api.getThreadDetail(id);
   return detail;
 });
+
+export const addComment = createAsyncThunk(
+  'threadDetail/addComment',
+  async ({ threadId, content }) => {
+    const response = await api.createComment(threadId, content);
+    return response;
+  }
+);
