@@ -63,8 +63,8 @@ function HomePage() {
       {user && (
         <button
           onClick={() => navigate('/new')}
-          className="fixed bottom-24 right-6 w-14 h-14 bg-gray-600 text-white text-3xl 
-                     rounded-full shadow-lg flex items-center justify-center 
+          className="fixed bottom-24 right-6 w-14 h-14 bg-gray-600 text-white text-3xl
+                     rounded-full shadow-lg flex items-center justify-center
                      hover:bg-gray-700 transition-all"
           title="Buat Diskusi Baru"
         >

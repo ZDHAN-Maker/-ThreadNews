@@ -33,7 +33,7 @@ const threadsSlice = createSlice({
       })
       .addCase(addThread.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.threads.unshift(action.payload); // auto refresh
+        state.threads.unshift(action.payload);
       })
       .addCase(addThread.rejected, (state, action) => {
         state.isLoading = false;

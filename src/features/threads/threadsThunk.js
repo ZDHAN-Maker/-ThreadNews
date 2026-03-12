@@ -5,8 +5,6 @@ export const fetchThreads = createAsyncThunk('threads/fetchThreads', async (_, t
   try {
     const threads = await api.getThreads();
     const users = await api.getUsers();
-
-    // Gabungkan owner info
     const enriched = threads.map((thread) => {
       const owner = users.find((u) => u.id === thread.ownerId);
       return {

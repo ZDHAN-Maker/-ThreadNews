@@ -2,10 +2,12 @@ import js from '@eslint/js';
 import globals from 'globals';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
+import dicoding from 'eslint-config-dicodingacademy';
 import { defineConfig } from 'eslint/config';
 
 export default defineConfig([
   js.configs.recommended,
+  dicoding,
 
   {
     files: ['**/*.{js,jsx}'],
@@ -16,6 +18,8 @@ export default defineConfig([
       globals: {
         ...globals.browser,
         ...globals.es2021,
+        ...globals.jest,
+        ...globals.cypress
       },
       parserOptions: {
         ecmaFeatures: {
