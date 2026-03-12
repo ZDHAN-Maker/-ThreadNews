@@ -32,8 +32,4 @@ describe('auth reducer', () => {
 
     expect(nextState).toEqual(initialState);
   });
-
-  test('dummy test for CI error', () => {
-    expect(1).toBe(2);
-  });
 });
