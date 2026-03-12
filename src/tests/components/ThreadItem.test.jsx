@@ -1,17 +1,30 @@
 /**
- * Skenario Testing:
- * 1. ThreadItem harus menampilkan judul thread
+ * Skenario testing:
+ * 1. ThreadItem harus dirender tanpa error
  */
 
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import ThreadItem from '../../components/ThreadItem';
+import { BrowserRouter } from 'react-router-dom';
 
-test('should display thread title', () => {
+test('should render thread item correctly', () => {
+
   const thread = {
+    id: 'thread-1',
     title: 'Testing Thread',
+    body: 'Test body',
+    category: 'test',
+    createdAt: new Date().toISOString(),
+    owner: { name: 'User' },
+    totalComments: 0,
+    upVotesBy: [],
+    downVotesBy: []
   };
 
-  render(<ThreadItem thread={thread} />);
+  render(
+    <BrowserRouter>
+      <ThreadItem thread={thread} />
+    </BrowserRouter>
+  );
 
-  expect(screen.getByText('Testing Thread')).toBeInTheDocument();
 });

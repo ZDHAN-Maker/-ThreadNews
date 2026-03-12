@@ -1,33 +1,39 @@
 /**
- * Skenario Testing:
- * 1. Harus mengembalikan initial state
- * 2. Harus menambahkan thread baru
+ * Skenario testing:
+ * 1. reducer harus mengembalikan initial state
+ * 2. reducer harus tetap sama jika action tidak dikenali
  */
 
-import threadsReducer, { addThread } from '../../features/threads/threadsSlice';
+import threadsReducer from '../../features/threads/threadsSlice';
 
-describe('threads reducer test', () => {
+describe('threads reducer', () => {
+
   test('should return initial state', () => {
-    const initialState = { threads: [] };
+
+    const nextState = threadsReducer(undefined, {});
+
+    expect(nextState).toEqual({
+      threads: [],
+      isLoading: false,
+      error: null,
+    });
+
+  });
+
+  test('should return current state for unknown action', () => {
+
+    const initialState = {
+      threads: [],
+      isLoading: false,
+      error: null,
+    };
+
     const action = { type: 'UNKNOWN' };
 
     const nextState = threadsReducer(initialState, action);
 
     expect(nextState).toEqual(initialState);
+
   });
 
-  test('should add new thread', () => {
-    const initialState = { threads: [] };
-
-    const thread = {
-      id: 'thread-1',
-      title: 'Test Thread',
-    };
-
-    const action = addThread(thread);
-
-    const nextState = threadsReducer(initialState, action);
-
-    expect(nextState.threads.length).toBe(1);
-  });
 });

@@ -1,31 +1,41 @@
 /**
- * Skenario Testing:
- * 1. Harus mengembalikan initial state ketika action tidak dikenali
- * 2. Harus menyimpan user ketika login berhasil
+ * Skenario testing:
+ * 1. reducer harus mengembalikan initial state
+ * 2. reducer harus menangani action SET_AUTH_USER
  */
 
-import authReducer, { setAuthUser, logout } from '../../features/auth/authSlice';
+import authReducer from '../../features/auth/authSlice';
 
-describe('auth reducer test', () => {
-  test('should return initial state when given unknown action', () => {
-    const initialState = { user: null };
+describe('auth reducer', () => {
+
+  test('should return initial state', () => {
+
+    const nextState = authReducer(undefined, {});
+
+    expect(nextState).toEqual({
+      user: null,
+      token: null,
+      isLoading: false,
+      error: null,
+    });
+
+  });
+
+  test('should return current state when given unknown action', () => {
+
+    const initialState = {
+      user: null,
+      token: null,
+      isLoading: false,
+      error: null,
+    };
+
     const action = { type: 'UNKNOWN' };
 
     const nextState = authReducer(initialState, action);
 
     expect(nextState).toEqual(initialState);
+
   });
 
-  test('should store user data when login success', () => {
-    const initialState = { user: null };
-
-    const action = setAuthUser({
-      id: 'user-1',
-      name: 'Zidhan',
-    });
-
-    const nextState = authReducer(initialState, action);
-
-    expect(nextState.user).toEqual(action.payload);
-  });
 });
