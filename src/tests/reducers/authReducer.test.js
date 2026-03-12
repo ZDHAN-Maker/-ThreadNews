@@ -7,9 +7,7 @@
 import authReducer from '../../features/auth/authSlice';
 
 describe('auth reducer', () => {
-
   test('should return initial state', () => {
-
     const nextState = authReducer(undefined, {});
 
     expect(nextState).toEqual({
@@ -18,11 +16,9 @@ describe('auth reducer', () => {
       isLoading: false,
       error: null,
     });
-
   });
 
   test('should return current state when given unknown action', () => {
-
     const initialState = {
       user: null,
       token: null,
@@ -35,7 +31,9 @@ describe('auth reducer', () => {
     const nextState = authReducer(initialState, action);
 
     expect(nextState).toEqual(initialState);
-
   });
 
+  test('dummy test for CI error', () => {
+    expect(1).toBe(2);
+  });
 });
