@@ -9,11 +9,12 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "jest",
-    "e2e": "cypress open"
+    "e2e": "cypress run"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.11.2",
     "@tailwindcss/vite": "^4.1.18",
+    "axios": "^1.13.6",
     "dayjs": "^1.11.19",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

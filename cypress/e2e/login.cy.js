@@ -11,11 +11,11 @@ describe('Login Flow', () => {
   it('should login successfully', () => {
     cy.visit('http://localhost:5173/login');
 
-    cy.get('input[name=email]').type('test@mail.com');
+    cy.get('input[type="email"]').type('test@mail.com');
 
-    cy.get('input[name=password]').type('123456');
+    cy.get('input[type="password"]').type('123456');
 
-    cy.get('button[type=submit]').click();
+    cy.get('button[type="submit"]').click();
 
     cy.url().should('include', '/');
   });
